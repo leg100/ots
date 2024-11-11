@@ -53,7 +53,7 @@ func TestIntegration_WorkspacePermissionsService(t *testing.T) {
 		got, err := svc.Workspaces.GetPolicy(ctx, ws.ID)
 		require.NoError(t, err)
 
-		assert.Equal(t, org.Name, got.Organization)
+		assert.Equal(t, string(org.Name), got.Organization)
 		assert.Equal(t, ws.ID, got.WorkspaceID)
 		assert.Equal(t, 3, len(got.Permissions))
 		assert.Contains(t, got.Permissions, authz.WorkspacePermission{

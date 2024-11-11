@@ -17,7 +17,7 @@ func TestIntegration_VariableSetUI(t *testing.T) {
 	// Create global variable set in browser
 	browser.New(t, ctx, func(page playwright.Page) {
 		// go to org
-		_, err := page.Goto(organizationURL(svc.System.Hostname(), org.Name))
+		_, err := page.Goto(organizationURL(svc.System.Hostname(), string(org.Name)))
 		require.NoError(t, err)
 
 		// go to variable sets
@@ -76,7 +76,7 @@ func TestIntegration_VariableSetUI(t *testing.T) {
 		// Create workspace-scoped variable set in browser, and add a variable.
 		//
 		// go to org
-		_, err = page.Goto(organizationURL(svc.System.Hostname(), org.Name))
+		_, err = page.Goto(organizationURL(svc.System.Hostname(), string(org.Name)))
 		require.NoError(t, err)
 
 		// go to variable sets
@@ -162,7 +162,7 @@ func TestIntegration_VariableSetUI(t *testing.T) {
 		require.NoError(t, err)
 
 		// go to variables page for workspace ws1
-		_, err = page.Goto(workspaceURL(svc.System.Hostname(), org.Name, ws1.Name))
+		_, err = page.Goto(workspaceURL(svc.System.Hostname(), string(org.Name), ws1.Name))
 		require.NoError(t, err)
 
 		err = page.Locator(`//a[text()='variables']`).Click()

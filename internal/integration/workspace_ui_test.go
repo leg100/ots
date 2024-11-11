@@ -24,11 +24,11 @@ func TestIntegration_WorkspaceUI(t *testing.T) {
 
 	// demonstrate listing and searching
 	browser.New(t, ctx, func(page playwright.Page) {
-		createWorkspace(t, page, daemon.System.Hostname(), org.Name, "workspace-1")
-		createWorkspace(t, page, daemon.System.Hostname(), org.Name, "workspace-12")
-		createWorkspace(t, page, daemon.System.Hostname(), org.Name, "workspace-2")
+		createWorkspace(t, page, daemon.System.Hostname(), string(org.Name), "workspace-1")
+		createWorkspace(t, page, daemon.System.Hostname(), string(org.Name), "workspace-12")
+		createWorkspace(t, page, daemon.System.Hostname(), string(org.Name), "workspace-2")
 
-		_, err := page.Goto(workspacesURL(daemon.System.Hostname(), org.Name))
+		_, err := page.Goto(workspacesURL(daemon.System.Hostname(), string(org.Name)))
 		require.NoError(t, err)
 
 		// search for 'workspace-1' which should produce two results
@@ -55,9 +55,9 @@ func TestIntegration_WorkspaceUI(t *testing.T) {
 
 		// demonstrate setting vcs trigger patterns
 		//
-		connectWorkspaceTasks(t, page, daemon.System.Hostname(), org.Name, "workspace-1", provider.String())
+		connectWorkspaceTasks(t, page, daemon.System.Hostname(), string(org.Name), "workspace-1", provider.String())
 
-		_, err = page.Goto(workspaceURL(daemon.System.Hostname(), org.Name, "workspace-1"))
+		_, err = page.Goto(workspaceURL(daemon.System.Hostname(), string(org.Name), "workspace-1"))
 		require.NoError(t, err)
 
 		// go to workspace settings
@@ -123,14 +123,14 @@ func TestIntegration_WorkspaceUI(t *testing.T) {
 		require.NoError(t, err)
 
 		// check UI has correctly updated the workspace resource
-		ws, err := daemon.Workspaces.GetByName(ctx, org.Name, "workspace-1")
+		ws, err := daemon.Workspaces.GetByName(ctx, string(org.Name), "workspace-1")
 		require.NoError(t, err)
 		require.Len(t, ws.TriggerPatterns, 2)
 		require.Contains(t, ws.TriggerPatterns, "/foo/*.tf")
 		require.Contains(t, ws.TriggerPatterns, "/baz/*.tf")
 
 		// set vcs trigger to use tag regex
-		_, err = page.Goto(workspaceURL(daemon.System.Hostname(), org.Name, "workspace-1"))
+		_, err = page.Goto(workspaceURL(daemon.System.Hostname(), string(org.Name), "workspace-1"))
 		require.NoError(t, err)
 
 		// go to workspace settings
@@ -165,7 +165,7 @@ func TestIntegration_WorkspaceUI(t *testing.T) {
 		require.NoError(t, err)
 
 		// check UI has correctly updated the workspace resource
-		ws, err = daemon.Workspaces.GetByName(ctx, org.Name, "workspace-1")
+		ws, err = daemon.Workspaces.GetByName(ctx, string(org.Name), "workspace-1")
 		require.NoError(t, err)
 		require.Len(t, ws.TriggerPatterns, 0)
 		require.NotNil(t, ws.Connection)
@@ -173,7 +173,7 @@ func TestIntegration_WorkspaceUI(t *testing.T) {
 
 		// set vcs branch
 		//
-		_, err = page.Goto(workspaceURL(daemon.System.Hostname(), org.Name, "workspace-1"))
+		_, err = page.Goto(workspaceURL(daemon.System.Hostname(), string(org.Name), "workspace-1"))
 		require.NoError(t, err)
 
 		// go to workspace settings
@@ -197,13 +197,13 @@ func TestIntegration_WorkspaceUI(t *testing.T) {
 		require.NoError(t, err)
 
 		// check UI has correctly updated the workspace resource
-		ws, err = daemon.Workspaces.GetByName(ctx, org.Name, "workspace-1")
+		ws, err = daemon.Workspaces.GetByName(ctx, string(org.Name), "workspace-1")
 		require.NoError(t, err)
 		require.Equal(t, "dev", ws.Connection.Branch)
 
 		// permit applies from the CLI
 		//
-		_, err = page.Goto(workspaceURL(daemon.System.Hostname(), org.Name, "workspace-1"))
+		_, err = page.Goto(workspaceURL(daemon.System.Hostname(), string(org.Name), "workspace-1"))
 		require.NoError(t, err)
 		// go to workspace settings
 		err = page.Locator(`//a[text()='settings']`).Click()
@@ -224,13 +224,13 @@ func TestIntegration_WorkspaceUI(t *testing.T) {
 		require.NoError(t, err)
 
 		// check UI has correctly updated the workspace resource
-		ws, err = daemon.Workspaces.GetByName(ctx, org.Name, "workspace-1")
+		ws, err = daemon.Workspaces.GetByName(ctx, string(org.Name), "workspace-1")
 		require.NoError(t, err)
 		require.Equal(t, true, ws.Connection.AllowCLIApply)
 
 		// set description
 
-		_, err = page.Goto(workspaceURL(daemon.System.Hostname(), org.Name, "workspace-1"))
+		_, err = page.Goto(workspaceURL(daemon.System.Hostname(), string(org.Name), "workspace-1"))
 		require.NoError(t, err)
 		// go to workspace settings
 		err = page.Locator(`//a[text()='settings']`).Click()
@@ -253,7 +253,7 @@ func TestIntegration_WorkspaceUI(t *testing.T) {
 	})
 
 	// check UI has correctly updated the workspace resource
-	ws, err := daemon.Workspaces.GetByName(ctx, org.Name, "workspace-1")
+	ws, err := daemon.Workspaces.GetByName(ctx, string(org.Name), "workspace-1")
 	require.NoError(t, err)
 	require.Equal(t, "my big fat workspace", ws.Description)
 }

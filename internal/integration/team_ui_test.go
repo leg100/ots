@@ -21,7 +21,7 @@ func TestIntegration_TeamUI(t *testing.T) {
 
 	browser.New(t, ctx, func(page playwright.Page) {
 		// go to org
-		_, err = page.Goto(organizationURL(daemon.System.Hostname(), org.Name))
+		_, err = page.Goto(organizationURL(daemon.System.Hostname(), string(org.Name)))
 		require.NoError(t, err)
 		// go to teams listing
 		err = page.Locator(`//a[text()='teams']`).Click()

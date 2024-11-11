@@ -93,8 +93,8 @@ func (a *web) create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	html.FlashSuccess(w, "created organization: "+org.Name)
-	http.Redirect(w, r, paths.Organization(org.Name), http.StatusFound)
+	html.FlashSuccess(w, "created organization: "+string(org.Name))
+	http.Redirect(w, r, paths.Organization(string(org.Name)), http.StatusFound)
 }
 
 func (a *web) list(w http.ResponseWriter, r *http.Request) {
@@ -158,7 +158,7 @@ func (a *web) get(w http.ResponseWriter, r *http.Request) {
 		OrganizationPage
 		*Organization
 	}{
-		OrganizationPage: NewPage(r, org.Name, org.Name),
+		OrganizationPage: NewPage(r, string(org.Name), string(org.Name)),
 		Organization:     org,
 	})
 }
@@ -180,7 +180,7 @@ func (a *web) edit(w http.ResponseWriter, r *http.Request) {
 		OrganizationPage
 		*Organization
 	}{
-		OrganizationPage: NewPage(r, org.Name, org.Name),
+		OrganizationPage: NewPage(r, string(org.Name), string(org.Name)),
 		Organization:     org,
 	})
 }
@@ -204,7 +204,7 @@ func (a *web) update(w http.ResponseWriter, r *http.Request) {
 	}
 
 	html.FlashSuccess(w, "updated organization")
-	http.Redirect(w, r, paths.EditOrganization(org.Name), http.StatusFound)
+	http.Redirect(w, r, paths.EditOrganization(string(org.Name)), http.StatusFound)
 }
 
 func (a *web) delete(w http.ResponseWriter, r *http.Request) {

@@ -29,23 +29,23 @@ func TestCluster(t *testing.T) {
 	otfd2, _, _ := setup(t, &config{Config: daemon.Config{Database: connstr}})
 
 	pool, err := otfd1.Runners.CreateAgentPool(ctx, runner.CreateAgentPoolOptions{
-		Organization: org.Name,
+		Organization: string(org.Name),
 		Name:         "pool-1",
 	})
 	require.NoError(t, err)
 
 	// start agent, instructing it to connect to otfd2,
 	// add --debug flag, which dumps info that this test relies upon
-	otfd2.startAgent(t, ctx, org.Name, &pool.ID, "", runner.Config{Debug: true})
+	otfd2.startAgent(t, ctx, string(org.Name), &pool.ID, "", runner.Config{Debug: true})
 
 	// create root module, setting otfd1 as hostname
-	root := newRootModule(t, otfd1.System.Hostname(), org.Name, "dev")
+	root := newRootModule(t, otfd1.System.Hostname(), string(org.Name), "dev")
 
 	// terraform init automatically creates a workspace named dev
 	otfd1.tfcli(t, ctx, "init", root)
 
 	// edit workspace to use agent
-	out := otfd1.otfcli(t, ctx, "workspaces", "edit", "dev", "--organization", org.Name, "--execution-mode", "agent", "--agent-pool-id", pool.ID.String())
+	out := otfd1.otfcli(t, ctx, "workspaces", "edit", "dev", "--organization", string(org.Name), "--execution-mode", "agent", "--agent-pool-id", pool.ID.String())
 	assert.Equal(t, "updated workspace\n", out)
 
 	// terraform plan

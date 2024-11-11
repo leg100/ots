@@ -46,7 +46,7 @@ func TestIntegration_Timeout(t *testing.T) {
 
 	// create some config and upload
 	cv := svc.createConfigurationVersion(t, ctx, ws, nil)
-	config := newRootModule(t, svc.System.Hostname(), org.Name, ws.Name, fmt.Sprintf(`
+	config := newRootModule(t, svc.System.Hostname(), string(org.Name), ws.Name, fmt.Sprintf(`
 data "http" "wait" {
 	url = "%s"
 }

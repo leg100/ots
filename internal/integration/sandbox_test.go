@@ -30,7 +30,7 @@ func TestSandbox(t *testing.T) {
 	}})
 
 	// create terraform config
-	config := newRootModule(t, daemon.System.Hostname(), org.Name, "dev")
+	config := newRootModule(t, daemon.System.Hostname(), string(org.Name), "dev")
 	// terraform init
 	daemon.tfcli(t, ctx, "init", config)
 	// terraform apply

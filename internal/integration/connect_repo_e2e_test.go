@@ -27,11 +27,11 @@ func TestConnectRepoE2E(t *testing.T) {
 	provider := daemon.createVCSProvider(t, ctx, org)
 
 	browser.New(t, ctx, func(page playwright.Page) {
-		createWorkspace(t, page, daemon.System.Hostname(), org.Name, "my-test-workspace")
-		connectWorkspaceTasks(t, page, daemon.System.Hostname(), org.Name, "my-test-workspace", provider.String())
+		createWorkspace(t, page, daemon.System.Hostname(), string(org.Name), "my-test-workspace")
+		connectWorkspaceTasks(t, page, daemon.System.Hostname(), string(org.Name), "my-test-workspace", provider.String())
 		// we can now start a run via the web ui, which'll retrieve the tarball from
 		// the fake github server
-		startRunTasks(t, page, daemon.System.Hostname(), org.Name, "my-test-workspace", run.PlanAndApplyOperation, true)
+		startRunTasks(t, page, daemon.System.Hostname(), string(org.Name), "my-test-workspace", run.PlanAndApplyOperation, true)
 
 		// Now we test the webhook functionality by sending an event to the daemon
 		// (which would usually be triggered by a git push to github). The event
@@ -44,7 +44,7 @@ func TestConnectRepoE2E(t *testing.T) {
 		// commit-triggered run should appear as latest run on workspace
 		//
 		// go to workspace
-		_, err := page.Goto(workspaceURL(daemon.System.Hostname(), org.Name, "my-test-workspace"))
+		_, err := page.Goto(workspaceURL(daemon.System.Hostname(), string(org.Name), "my-test-workspace"))
 		require.NoError(t, err)
 		// branch should match that of push event
 		err = expect.Locator(page.Locator(`//div[@id='latest-run']//span[@id='vcs-branch' and text()='master']`)).ToBeVisible()
@@ -70,7 +70,7 @@ func TestConnectRepoE2E(t *testing.T) {
 		// workspace and vcs provider
 		//
 		// go to workspace
-		_, err = page.Goto(workspaceURL(daemon.System.Hostname(), org.Name, "my-test-workspace"))
+		_, err = page.Goto(workspaceURL(daemon.System.Hostname(), string(org.Name), "my-test-workspace"))
 		require.NoError(t, err)
 		// go to workspace settings
 		err = page.Locator(`//a[text()='settings']`).Click()
@@ -94,7 +94,7 @@ func TestConnectRepoE2E(t *testing.T) {
 		// delete vcs provider
 		//
 		// go to org
-		_, err = page.Goto(organizationURL(daemon.System.Hostname(), org.Name))
+		_, err = page.Goto(organizationURL(daemon.System.Hostname(), string(org.Name)))
 		require.NoError(t, err)
 		// go to vcs providers
 		err = page.Locator("#vcs_providers > a").Click()

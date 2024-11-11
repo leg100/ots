@@ -19,7 +19,7 @@ type (
 		ID        resource.ID `jsonapi:"primary,organizations"`
 		CreatedAt time.Time   `jsonapi:"attribute" json:"created-at"`
 		UpdatedAt time.Time   `jsonapi:"attribute" json:"updated-at"`
-		Name      string      `jsonapi:"attribute" json:"name"`
+		Name      Name        `jsonapi:"attribute" json:"name"`
 
 		// TFE fields that OTF does not support but persists merely to pass the
 		// go-tfe integration tests
@@ -66,7 +66,7 @@ func NewOrganization(opts CreateOptions) (*Organization, error) {
 		return nil, err
 	}
 	org := Organization{
-		Name:                   *opts.Name,
+		Name:                   Name(*opts.Name),
 		CreatedAt:              internal.CurrentTimestamp(nil),
 		UpdatedAt:              internal.CurrentTimestamp(nil),
 		ID:                     resource.NewID(resource.OrganizationKind),
@@ -90,7 +90,7 @@ func NewOrganization(opts CreateOptions) (*Organization, error) {
 
 func (org *Organization) Update(opts UpdateOptions) error {
 	if opts.Name != nil {
-		org.Name = *opts.Name
+		org.Name = Name(*opts.Name)
 	}
 	if opts.Email != nil {
 		org.Email = opts.Email

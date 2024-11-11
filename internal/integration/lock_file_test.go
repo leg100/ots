@@ -22,7 +22,7 @@ func TestLockFile(t *testing.T) {
 
 	// in a browser, create workspace
 	browser.New(t, ctx, func(page playwright.Page) {
-		createWorkspace(t, page, svc.System.Hostname(), org.Name, "my-test-workspace")
+		createWorkspace(t, page, svc.System.Hostname(), string(org.Name), "my-test-workspace")
 	})
 
 	// create root module with only a variable and no resources - this should
@@ -43,7 +43,7 @@ terraform {
 variable "foo" {
 	default = "bar"
 }
-`, svc.System.Hostname(), org.Name, "my-test-workspace"))
+`, svc.System.Hostname(), string(org.Name), "my-test-workspace"))
 	err := os.WriteFile(filepath.Join(root, "main.tf"), []byte(config), 0o600)
 	require.NoError(t, err)
 

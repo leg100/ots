@@ -18,13 +18,13 @@ func TestLocal(t *testing.T) {
 	// create workspace with local execution mode
 	_, err := daemon.Workspaces.Create(ctx, workspace.CreateOptions{
 		Name:          internal.String("local-ws"),
-		Organization:  internal.String(org.Name),
+		Organization:  internal.String(string(org.Name)),
 		ExecutionMode: workspace.ExecutionModePtr(workspace.LocalExecutionMode),
 	})
 	require.NoError(t, err)
 
 	// create root module, setting otfd1 as hostname
-	root := newRootModule(t, daemon.System.Hostname(), org.Name, "local-ws")
+	root := newRootModule(t, daemon.System.Hostname(), string(org.Name), "local-ws")
 
 	// run terraform locally, configuring OTF as a remote backend.
 	daemon.tfcli(t, ctx, "init", root)

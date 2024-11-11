@@ -124,7 +124,7 @@ func TestUser(t *testing.T) {
 		// automatically creates owners team consisting of one owner
 		svc, org, ctx := setup(t, nil)
 		owner := userFromContext(t, ctx)
-		owners := svc.getTeam(t, ctx, org.Name, "owners")
+		owners := svc.getTeam(t, ctx, string(org.Name), "owners")
 
 		// create developers team
 		developers := svc.createTeam(t, ctx, org)
@@ -135,7 +135,7 @@ func TestUser(t *testing.T) {
 		// create guest user, member of no team
 		guest := svc.createUser(t)
 
-		got, err := svc.Users.ListOrganizationUsers(ctx, org.Name)
+		got, err := svc.Users.ListOrganizationUsers(ctx, string(org.Name))
 		require.NoError(t, err)
 
 		// should get list of two users: owner and dev
@@ -202,7 +202,7 @@ func TestUser(t *testing.T) {
 		svc, org, ctx := setup(t, nil)
 		owner := userFromContext(t, ctx)
 
-		owners, err := svc.Teams.Get(ctx, org.Name, "owners")
+		owners, err := svc.Teams.Get(ctx, string(org.Name), "owners")
 		require.NoError(t, err)
 		// add another owner
 		another := svc.createUser(t, otfuser.WithTeams(owners))

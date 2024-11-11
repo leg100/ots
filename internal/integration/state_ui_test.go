@@ -39,7 +39,7 @@ applied:
 	}
 
 	browser.New(t, ctx, func(page playwright.Page) {
-		_, err := page.Goto(workspaceURL(daemon.System.Hostname(), org.Name, ws.Name))
+		_, err := page.Goto(workspaceURL(daemon.System.Hostname(), string(org.Name), ws.Name))
 		require.NoError(t, err)
 
 		err = expect.Locator(page.Locator(`//label[@id='resources-label']`)).ToHaveText(regexp.MustCompile(`Resources \(1\)`))

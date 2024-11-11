@@ -35,30 +35,30 @@ func TestWebhook(t *testing.T) {
 
 	// create and connect first workspace
 	browser.New(t, ctx, func(page playwright.Page) {
-		createWorkspace(t, page, daemon.System.Hostname(), org.Name, "workspace-1")
-		connectWorkspaceTasks(t, page, daemon.System.Hostname(), org.Name, "workspace-1", provider.String())
+		createWorkspace(t, page, daemon.System.Hostname(), string(org.Name), "workspace-1")
+		connectWorkspaceTasks(t, page, daemon.System.Hostname(), string(org.Name), "workspace-1", provider.String())
 
 		// webhook should be registered with github
 		hook := <-daemon.WebhookEvents
 		require.Equal(t, github.WebhookCreated, hook.Action)
 
 		// create and connect second workspace
-		createWorkspace(t, page, daemon.System.Hostname(), org.Name, "workspace-2")
-		connectWorkspaceTasks(t, page, daemon.System.Hostname(), org.Name, "workspace-2", provider.String())
+		createWorkspace(t, page, daemon.System.Hostname(), string(org.Name), "workspace-2")
+		connectWorkspaceTasks(t, page, daemon.System.Hostname(), string(org.Name), "workspace-2", provider.String())
 
 		// second workspace re-uses same webhook on github
 		hook = <-daemon.WebhookEvents
 		require.Equal(t, github.WebhookUpdated, hook.Action)
 
 		// disconnect second workspace
-		disconnectWorkspaceTasks(t, page, daemon.System.Hostname(), org.Name, "workspace-2")
+		disconnectWorkspaceTasks(t, page, daemon.System.Hostname(), string(org.Name), "workspace-2")
 
 		// first workspace is still connected, so webhook should still be configured
 		// on github
 		require.True(t, daemon.HasWebhook())
 
 		// disconnect first workspace
-		disconnectWorkspaceTasks(t, page, daemon.System.Hostname(), org.Name, "workspace-1")
+		disconnectWorkspaceTasks(t, page, daemon.System.Hostname(), string(org.Name), "workspace-1")
 
 		// No more workspaces are connected to repo, so webhook should have been
 		// deleted
@@ -115,7 +115,7 @@ func TestWebhook_Purger(t *testing.T) {
 			provider := daemon.createVCSProvider(t, ctx, org)
 			ws, err := daemon.Workspaces.Create(ctx, workspace.CreateOptions{
 				Name:         internal.String("workspace-1"),
-				Organization: &org.Name,
+				Organization: &string(org.Name),
 				ConnectOptions: &workspace.ConnectOptions{
 					VCSProviderID: &provider.ID,
 					RepoPath:      &repo,
@@ -127,7 +127,7 @@ func TestWebhook_Purger(t *testing.T) {
 			hook := <-daemon.WebhookEvents
 			require.Equal(t, github.WebhookCreated, hook.Action)
 
-			tt.event(t, org.Name, ws.ID, provider.ID)
+			tt.event(t, string(org.Name), ws.ID, provider.ID)
 
 			// webhook should now have been deleted from  github
 			hook = <-daemon.WebhookEvents

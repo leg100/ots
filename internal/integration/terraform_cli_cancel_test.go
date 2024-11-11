@@ -39,7 +39,7 @@ func TestIntegration_TerraformCLICancel(t *testing.T) {
 	}))
 
 	// create some config and run terraform init
-	config := newRootModule(t, svc.System.Hostname(), org.Name, t.Name(), fmt.Sprintf(`
+	config := newRootModule(t, svc.System.Hostname(), string(org.Name), t.Name(), fmt.Sprintf(`
 data "http" "wait" {
 	url = "%s"
 }

@@ -16,7 +16,7 @@ func TestIntegration_OrganizationTokenUI(t *testing.T) {
 
 	browser.New(t, ctx, func(page playwright.Page) {
 		// go to organization
-		_, err := page.Goto(organizationURL(svc.System.Hostname(), org.Name))
+		_, err := page.Goto(organizationURL(svc.System.Hostname(), string(org.Name)))
 		require.NoError(t, err)
 
 		// go to organization token page

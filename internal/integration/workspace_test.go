@@ -29,14 +29,14 @@ func TestWorkspace(t *testing.T) {
 
 		ws, err := daemon.Workspaces.Create(ctx, workspace.CreateOptions{
 			Name:         internal.String(uuid.NewString()),
-			Organization: internal.String(org.Name),
+			Organization: internal.String(string(org.Name)),
 		})
 		require.NoError(t, err)
 
 		t.Run("duplicate error", func(t *testing.T) {
 			_, err := daemon.Workspaces.Create(ctx, workspace.CreateOptions{
 				Name:         internal.String(ws.Name),
-				Organization: internal.String(org.Name),
+				Organization: internal.String(string(org.Name)),
 			})
 			require.Equal(t, internal.ErrResourceAlreadyExists, err)
 		})
@@ -52,7 +52,7 @@ func TestWorkspace(t *testing.T) {
 		vcsprov := daemon.createVCSProvider(t, ctx, org)
 		ws, err := daemon.Workspaces.Create(ctx, workspace.CreateOptions{
 			Name:         internal.String(uuid.NewString()),
-			Organization: &org.Name,
+			Organization: &string(org.Name),
 			ConnectOptions: &workspace.ConnectOptions{
 				RepoPath:      internal.String("test/dummy"),
 				VCSProviderID: &vcsprov.ID,
@@ -82,7 +82,7 @@ func TestWorkspace(t *testing.T) {
 		vcsprov := svc.createVCSProvider(t, ctx, org)
 		ws, err := svc.Workspaces.Create(ctx, workspace.CreateOptions{
 			Name:         internal.String(uuid.NewString()),
-			Organization: &org.Name,
+			Organization: &string(org.Name),
 			ConnectOptions: &workspace.ConnectOptions{
 				RepoPath:      internal.String("test/dummy"),
 				VCSProviderID: &vcsprov.ID,
@@ -172,7 +172,7 @@ func TestWorkspace(t *testing.T) {
 		ws1 := svc.createWorkspace(t, ctx, org)
 		ws2 := svc.createWorkspace(t, ctx, org)
 		wsTagged, err := svc.Workspaces.Create(ctx, workspace.CreateOptions{
-			Organization: internal.String(org.Name),
+			Organization: internal.String(string(org.Name)),
 			Name:         internal.String("ws-tagged"),
 			Tags:         []workspace.TagSpec{{Name: "foo"}, {Name: "bar"}},
 		})
@@ -185,7 +185,7 @@ func TestWorkspace(t *testing.T) {
 		}{
 			{
 				name: "filter by org",
-				opts: workspace.ListOptions{Organization: internal.String(org.Name)},
+				opts: workspace.ListOptions{Organization: internal.String(string(org.Name))},
 				want: func(t *testing.T, l *resource.Page[*workspace.Workspace]) {
 					assert.Equal(t, 3, len(l.Items))
 					assert.Contains(t, l.Items, ws1)
@@ -196,7 +196,7 @@ func TestWorkspace(t *testing.T) {
 				name: "filter by name regex",
 				// test workspaces are named `workspace-<random 6 alphanumerals>`, so prefix with 14
 				// characters to be pretty damn sure only ws1 is selected.
-				opts: workspace.ListOptions{Organization: internal.String(org.Name), Search: ws1.Name[:14]},
+				opts: workspace.ListOptions{Organization: internal.String(string(org.Name)), Search: ws1.Name[:14]},
 				want: func(t *testing.T, l *resource.Page[*workspace.Workspace]) {
 					assert.Equal(t, 1, len(l.Items))
 					assert.Equal(t, ws1, l.Items[0])
@@ -219,14 +219,14 @@ func TestWorkspace(t *testing.T) {
 			},
 			{
 				name: "filter by non-existent name regex",
-				opts: workspace.ListOptions{Organization: internal.String(org.Name), Search: "xyz"},
+				opts: workspace.ListOptions{Organization: internal.String(string(org.Name)), Search: "xyz"},
 				want: func(t *testing.T, l *resource.Page[*workspace.Workspace]) {
 					assert.Equal(t, 0, len(l.Items))
 				},
 			},
 			{
 				name: "paginated results ordered by updated_at",
-				opts: workspace.ListOptions{Organization: internal.String(org.Name), PageOptions: resource.PageOptions{PageNumber: 1, PageSize: 1}},
+				opts: workspace.ListOptions{Organization: internal.String(string(org.Name)), PageOptions: resource.PageOptions{PageNumber: 1, PageSize: 1}},
 				want: func(t *testing.T, l *resource.Page[*workspace.Workspace]) {
 					assert.Equal(t, 1, len(l.Items))
 					// results are in descending order so we expect wsTagged to be listed
@@ -240,7 +240,7 @@ func TestWorkspace(t *testing.T) {
 			},
 			{
 				name: "stray pagination",
-				opts: workspace.ListOptions{Organization: internal.String(org.Name), PageOptions: resource.PageOptions{PageNumber: 999, PageSize: 10}},
+				opts: workspace.ListOptions{Organization: internal.String(string(org.Name)), PageOptions: resource.PageOptions{PageNumber: 999, PageSize: 10}},
 				want: func(t *testing.T, l *resource.Page[*workspace.Workspace]) {
 					// zero results but count should ignore pagination
 					assert.Equal(t, 0, len(l.Items))
@@ -264,13 +264,13 @@ func TestWorkspace(t *testing.T) {
 		svc, org, ctx := setup(t, nil)
 		ws1, err := svc.Workspaces.Create(ctx, workspace.CreateOptions{
 			Name:         internal.String(uuid.NewString()),
-			Organization: &org.Name,
+			Organization: &string(org.Name),
 			Tags:         []workspace.TagSpec{{Name: "foo"}},
 		})
 		require.NoError(t, err)
 		ws2, err := svc.Workspaces.Create(ctx, workspace.CreateOptions{
 			Name:         internal.String(uuid.NewString()),
-			Organization: &org.Name,
+			Organization: &string(org.Name),
 			Tags:         []workspace.TagSpec{{Name: "foo"}, {Name: "bar"}},
 		})
 		require.NoError(t, err)
@@ -308,7 +308,7 @@ func TestWorkspace(t *testing.T) {
 		for _, tt := range tests {
 			t.Run(tt.name, func(t *testing.T) {
 				results, err := svc.Workspaces.List(ctx, workspace.ListOptions{
-					Organization: &org.Name,
+					Organization: &string(org.Name),
 					Tags:         tt.tags,
 				})
 				require.NoError(t, err)
@@ -339,7 +339,7 @@ func TestWorkspace(t *testing.T) {
 			{
 				name: "show both workspaces",
 				user: user1,
-				opts: workspace.ListOptions{Organization: internal.String(org.Name)},
+				opts: workspace.ListOptions{Organization: internal.String(string(org.Name))},
 				want: func(t *testing.T, l *resource.Page[*workspace.Workspace]) {
 					assert.Equal(t, 2, len(l.Items))
 					assert.Contains(t, l.Items, ws1)
@@ -357,7 +357,7 @@ func TestWorkspace(t *testing.T) {
 			{
 				name: "user with no perms",
 				user: user2,
-				opts: workspace.ListOptions{Organization: internal.String(org.Name)},
+				opts: workspace.ListOptions{Organization: internal.String(string(org.Name))},
 				want: func(t *testing.T, l *resource.Page[*workspace.Workspace]) {
 					assert.Equal(t, 0, len(l.Items))
 				},
@@ -366,7 +366,7 @@ func TestWorkspace(t *testing.T) {
 				name: "paginated results ordered by updated_at",
 				user: user1,
 				opts: workspace.ListOptions{
-					Organization: internal.String(org.Name),
+					Organization: internal.String(string(org.Name)),
 					PageOptions:  resource.PageOptions{PageNumber: 1, PageSize: 1},
 				},
 				want: func(t *testing.T, l *resource.Page[*workspace.Workspace]) {

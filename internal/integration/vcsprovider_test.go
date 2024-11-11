@@ -18,7 +18,7 @@ func TestVCSProvider(t *testing.T) {
 		svc, org, ctx := setup(t, nil)
 
 		_, err := svc.VCSProviders.Create(ctx, vcsprovider.CreateOptions{
-			Organization: org.Name,
+			Organization: string(org.Name),
 			Token:        internal.String(uuid.NewString()),
 			Kind:         vcs.KindPtr(vcs.GithubKind),
 		})
@@ -41,7 +41,7 @@ func TestVCSProvider(t *testing.T) {
 		provider2 := svc.createVCSProvider(t, ctx, org)
 		provider3 := svc.createVCSProvider(t, ctx, org)
 
-		got, err := svc.VCSProviders.List(ctx, org.Name)
+		got, err := svc.VCSProviders.List(ctx, string(org.Name))
 		require.NoError(t, err)
 
 		assert.Contains(t, got, provider1)

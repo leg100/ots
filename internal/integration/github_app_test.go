@@ -234,7 +234,7 @@ func TestIntegration_GithubApp_Event(t *testing.T) {
 	require.NoError(t, err)
 
 	provider, err := daemon.VCSProviders.Create(ctx, vcsprovider.CreateOptions{
-		Organization:       org.Name,
+		Organization:       string(org.Name),
 		GithubAppInstallID: internal.Int64(42997659),
 	})
 	require.NoError(t, err)
@@ -242,7 +242,7 @@ func TestIntegration_GithubApp_Event(t *testing.T) {
 	// create and connect a workspace to a repo using the app install
 	_, err = daemon.Workspaces.Create(ctx, workspace.CreateOptions{
 		Name:         internal.String("dev"),
-		Organization: internal.String(org.Name),
+		Organization: internal.String(string(org.Name)),
 		ConnectOptions: &workspace.ConnectOptions{
 			VCSProviderID: &provider.ID,
 			RepoPath:      internal.String("leg100/otf-workspaces"),

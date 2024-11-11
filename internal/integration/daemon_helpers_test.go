@@ -177,7 +177,7 @@ func (s *testDaemon) createWorkspace(t *testing.T, ctx context.Context, org *org
 
 	ws, err := s.Workspaces.Create(ctx, workspace.CreateOptions{
 		Name:         internal.String("workspace-" + internal.GenerateRandomString(6)),
-		Organization: &org.Name,
+		Organization: &string(org.Name),
 	})
 	require.NoError(t, err)
 	return ws
@@ -199,7 +199,7 @@ func (s *testDaemon) createVCSProvider(t *testing.T, ctx context.Context, org *o
 	}
 
 	provider, err := s.VCSProviders.Create(ctx, vcsprovider.CreateOptions{
-		Organization: org.Name,
+		Organization: string(org.Name),
 		// tests require a legitimate cloud name to avoid invalid foreign
 		// key error upon insert/update
 		Kind:  vcs.KindPtr(vcs.GithubKind),
@@ -219,7 +219,7 @@ func (s *testDaemon) createModule(t *testing.T, ctx context.Context, org *organi
 	module, err := s.Modules.CreateModule(ctx, module.CreateOptions{
 		Name:         uuid.NewString(),
 		Provider:     uuid.NewString(),
-		Organization: org.Name,
+		Organization: string(org.Name),
 	})
 	require.NoError(t, err)
 	return module
@@ -267,7 +267,7 @@ func (s *testDaemon) createTeam(t *testing.T, ctx context.Context, org *organiza
 		org = s.createOrganization(t, ctx)
 	}
 
-	team, err := s.Teams.Create(ctx, org.Name, team.CreateTeamOptions{
+	team, err := s.Teams.Create(ctx, string(org.Name), team.CreateTeamOptions{
 		Name: internal.String("team-" + internal.GenerateRandomString(4)),
 	})
 	require.NoError(t, err)

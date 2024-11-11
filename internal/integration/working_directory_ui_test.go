@@ -19,11 +19,10 @@ func TestWorkingDirectory(t *testing.T) {
 
 	// create workspace and set working directory
 	browser.New(t, ctx, func(page playwright.Page) {
-
-		createWorkspace(t, page, daemon.System.Hostname(), org.Name, "my-workspace")
+		createWorkspace(t, page, daemon.System.Hostname(), string(org.Name), "my-workspace")
 
 		// go to workspace
-		_, err := page.Goto(workspaceURL(daemon.System.Hostname(), org.Name, "my-workspace"))
+		_, err := page.Goto(workspaceURL(daemon.System.Hostname(), string(org.Name), "my-workspace"))
 		require.NoError(t, err)
 
 		// go to workspace settings
@@ -44,7 +43,7 @@ func TestWorkingDirectory(t *testing.T) {
 
 	// create root module along with a sub-directory containing the config we're
 	// going to test
-	root := newRootModule(t, daemon.System.Hostname(), org.Name, "my-workspace")
+	root := newRootModule(t, daemon.System.Hostname(), string(org.Name), "my-workspace")
 	subdir := path.Join(root, "subdir")
 	err := os.Mkdir(subdir, 0o755)
 	require.NoError(t, err)

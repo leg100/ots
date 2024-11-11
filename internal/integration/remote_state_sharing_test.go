@@ -22,7 +22,7 @@ func TestRemoteStateSharing(t *testing.T) {
 	// producer is the workspace sharing its state
 	producer, err := daemon.Workspaces.Create(ctx, workspace.CreateOptions{
 		Name:              internal.String("producer"),
-		Organization:      internal.String(org.Name),
+		Organization:      internal.String(string(org.Name)),
 		GlobalRemoteState: internal.Bool(true),
 	})
 	require.NoError(t, err)
@@ -74,7 +74,7 @@ data "terraform_remote_state" "producer" {
 output "remote_foo" {
   value = data.terraform_remote_state.producer.outputs.foo
 }
-`, daemon.System.Hostname(), org.Name, producer.Name)
+`, daemon.System.Hostname(), string(org.Name), producer.Name)
 	err = os.WriteFile(filepath.Join(consumerRoot, "main.tf"), []byte(consumerConfig), 0o777)
 	require.NoError(t, err)
 	tarball, err = internal.Pack(consumerRoot)

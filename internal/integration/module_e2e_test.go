@@ -35,7 +35,7 @@ func TestModuleE2E(t *testing.T) {
 	browser.New(t, ctx, func(page playwright.Page) {
 		// publish module
 		// go to org
-		_, err := page.Goto(organizationURL(svc.System.Hostname(), org.Name))
+		_, err := page.Goto(organizationURL(svc.System.Hostname(), string(org.Name)))
 		require.NoError(t, err)
 
 		// go to modules
@@ -105,17 +105,17 @@ func TestModuleE2E(t *testing.T) {
 
 		// Now run terraform with some config that sources the module. First we need
 		// a workspace...
-		createWorkspace(t, page, svc.System.Hostname(), org.Name, workspaceName)
+		createWorkspace(t, page, svc.System.Hostname(), string(org.Name), workspaceName)
 	})
 
 	// generate some terraform config that sources our module
-	root := newRootModule(t, svc.System.Hostname(), org.Name, workspaceName)
+	root := newRootModule(t, svc.System.Hostname(), string(org.Name), workspaceName)
 	config := fmt.Sprintf(`
 module "mod" {
   source  = "%s/%s/%s/%s"
   version = "1.0.0"
 }
-`, svc.System.Hostname(), org.Name, "mod", "aws")
+`, svc.System.Hostname(), string(org.Name), "mod", "aws")
 	err := os.WriteFile(filepath.Join(root, "sourcing.tf"), []byte(config), 0o600)
 	require.NoError(t, err)
 
@@ -133,7 +133,7 @@ module "mod" {
 
 	browser.New(t, ctx, func(page playwright.Page) {
 		// go to org
-		_, err = page.Goto(organizationURL(svc.System.Hostname(), org.Name))
+		_, err = page.Goto(organizationURL(svc.System.Hostname(), string(org.Name)))
 		require.NoError(t, err)
 
 		// go to modules

@@ -32,7 +32,7 @@ func TestAgentPoolsUI(t *testing.T) {
 	// create agent pool via UI
 	browser.New(t, ctx, func(page playwright.Page) {
 		// go to org main menu
-		_, err := page.Goto(organizationURL(daemon.System.Hostname(), org.Name))
+		_, err := page.Goto(organizationURL(daemon.System.Hostname(), string(org.Name)))
 		require.NoError(t, err)
 
 		// go to list of agent pools
@@ -94,7 +94,7 @@ func TestAgentPoolsUI(t *testing.T) {
 		require.NoError(t, err)
 
 		// go to workspaces
-		_, err = page.Goto(workspaceURL(daemon.System.Hostname(), org.Name, ws1.Name))
+		_, err = page.Goto(workspaceURL(daemon.System.Hostname(), string(org.Name), ws1.Name))
 		require.NoError(t, err)
 
 		// go to workspace settings
@@ -159,7 +159,7 @@ func TestAgentPoolsUI(t *testing.T) {
 		require.Regexp(t, `^[\w-]+\.[\w-]+\.[\w-]+$`, token)
 
 		// start agent up, configured to use token.
-		registered, shutdownAgent := daemon.startAgent(t, ctx, org.Name, nil, token, runner.Config{})
+		registered, shutdownAgent := daemon.startAgent(t, ctx, string(org.Name), nil, token, runner.Config{})
 
 		// go back to agent pool
 		_, err = page.Goto(fmt.Sprintf("https://%s/app/agent-pools/%s", daemon.System.Hostname(), created.Payload.ID))
@@ -196,7 +196,7 @@ func TestAgentPoolsUI(t *testing.T) {
 		require.NoError(t, err)
 
 		// go to workspace
-		_, err = page.Goto(workspaceURL(daemon.System.Hostname(), org.Name, ws1.Name))
+		_, err = page.Goto(workspaceURL(daemon.System.Hostname(), string(org.Name), ws1.Name))
 		require.NoError(t, err)
 
 		// go to workspace settings

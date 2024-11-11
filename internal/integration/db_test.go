@@ -53,7 +53,7 @@ func TestTx(t *testing.T) {
 			ID:                         org.ID,
 			CreatedAt:                  sql.Timestamptz(org.CreatedAt),
 			UpdatedAt:                  sql.Timestamptz(org.UpdatedAt),
-			Name:                       sql.String(org.Name),
+			Name:                       sql.String(string(org.Name)),
 			Email:                      sql.StringPtr(org.Email),
 			CollaboratorAuthPolicy:     sql.StringPtr(org.CollaboratorAuthPolicy),
 			CostEstimationEnabled:      sql.Bool(org.CostEstimationEnabled),

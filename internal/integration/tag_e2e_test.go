@@ -33,7 +33,7 @@ terraform {
   }
 }
 resource "null_resource" "tags_e2e" {}
-`, daemon.System.Hostname(), org.Name))
+`, daemon.System.Hostname(), string(org.Name)))
 
 	tfpath := daemon.downloadTerraform(t, ctx, nil)
 
@@ -59,7 +59,7 @@ resource "null_resource" "tags_e2e" {}
 
 	// confirm tagged workspace has been created
 	got, err := daemon.Workspaces.List(ctx, workspace.ListOptions{
-		Organization: internal.String(org.Name),
+		Organization: internal.String(string(org.Name)),
 		Tags:         []string{"foo", "bar"},
 	})
 	require.NoError(t, err)
@@ -71,7 +71,7 @@ resource "null_resource" "tags_e2e" {}
 
 	// test UI management of tags
 	browser.New(t, ctx, func(page playwright.Page) {
-		_, err = page.Goto(workspaceURL(daemon.System.Hostname(), org.Name, "tagged"))
+		_, err = page.Goto(workspaceURL(daemon.System.Hostname(), string(org.Name), "tagged"))
 		require.NoError(t, err)
 		// confirm workspace page lists both tags
 		err = expect.Locator(page.Locator(`//*[@id='tags']//span[contains(text(),'foo')]`)).ToBeVisible()
@@ -109,7 +109,7 @@ resource "null_resource" "tags_e2e" {}
 	})
 
 	// should be tags 'foo' and 'baz'
-	tags, err := daemon.Workspaces.ListTags(ctx, org.Name, workspace.ListTagsOptions{})
+	tags, err := daemon.Workspaces.ListTags(ctx, string(org.Name), workspace.ListTagsOptions{})
 	require.NoError(t, err)
 	assert.Len(t, tags.Items, 2)
 
@@ -118,7 +118,7 @@ resource "null_resource" "tags_e2e" {}
 	require.NoError(t, err)
 
 	// should be no tags
-	tags, err = daemon.Workspaces.ListTags(ctx, org.Name, workspace.ListTagsOptions{})
+	tags, err = daemon.Workspaces.ListTags(ctx, string(org.Name), workspace.ListTagsOptions{})
 	require.NoError(t, err)
 	assert.Len(t, tags.Items, 0)
 }

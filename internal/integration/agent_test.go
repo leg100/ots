@@ -18,20 +18,20 @@ func TestIntegration_Agents(t *testing.T) {
 
 	pool1, err := daemon.Runners.CreateAgentPool(ctx, runner.CreateAgentPoolOptions{
 		Name:         "pool-1",
-		Organization: org.Name,
+		Organization: string(org.Name),
 	})
 	require.NoError(t, err)
 
 	pool2, err := daemon.Runners.CreateAgentPool(ctx, runner.CreateAgentPoolOptions{
 		Name:         "pool-2",
-		Organization: org.Name,
+		Organization: string(org.Name),
 	})
 	require.NoError(t, err)
 
 	// ws1 is assigned to pool1
 	ws1, err := daemon.Workspaces.Create(ctx, workspace.CreateOptions{
 		Name:          internal.String("ws-1"),
-		Organization:  internal.String(org.Name),
+		Organization:  internal.String(string(org.Name)),
 		ExecutionMode: workspace.ExecutionModePtr(workspace.AgentExecutionMode),
 		AgentPoolID:   &pool1.ID,
 	})
@@ -40,16 +40,16 @@ func TestIntegration_Agents(t *testing.T) {
 	// ws2 to assigned to pool2
 	ws2, err := daemon.Workspaces.Create(ctx, workspace.CreateOptions{
 		Name:          internal.String("ws-2"),
-		Organization:  internal.String(org.Name),
+		Organization:  internal.String(string(org.Name)),
 		ExecutionMode: workspace.ExecutionModePtr(workspace.AgentExecutionMode),
 		AgentPoolID:   &pool2.ID,
 	})
 	require.NoError(t, err)
 
 	// start agents up
-	agent1, shutdown1 := daemon.startAgent(t, ctx, org.Name, &pool1.ID, "", runner.Config{})
+	agent1, shutdown1 := daemon.startAgent(t, ctx, string(org.Name), &pool1.ID, "", runner.Config{})
 	defer shutdown1()
-	agent2, shutdown2 := daemon.startAgent(t, ctx, org.Name, &pool2.ID, "", runner.Config{})
+	agent2, shutdown2 := daemon.startAgent(t, ctx, string(org.Name), &pool2.ID, "", runner.Config{})
 	defer shutdown2()
 
 	// watch job events

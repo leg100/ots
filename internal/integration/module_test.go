@@ -19,7 +19,7 @@ func TestModule(t *testing.T) {
 		_, err := svc.Modules.CreateModule(ctx, module.CreateOptions{
 			Name:         uuid.NewString(),
 			Provider:     uuid.NewString(),
-			Organization: org.Name,
+			Organization: string(org.Name),
 		})
 		require.NoError(t, err)
 	})
@@ -81,7 +81,7 @@ func TestModule(t *testing.T) {
 		module3 := svc.createModule(t, ctx, org)
 
 		got, err := svc.Modules.ListModules(ctx, module.ListModulesOptions{
-			Organization: org.Name,
+			Organization: string(org.Name),
 		})
 		require.NoError(t, err)
 

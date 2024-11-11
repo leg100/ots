@@ -40,7 +40,7 @@ func (r row) toOrganization() *Organization {
 		ID:                         r.OrganizationID,
 		CreatedAt:                  r.CreatedAt.Time.UTC(),
 		UpdatedAt:                  r.UpdatedAt.Time.UTC(),
-		Name:                       r.Name.String,
+		Name:                       Name(r.Name.String),
 		AllowForceDeleteWorkspaces: r.AllowForceDeleteWorkspaces.Bool,
 		CostEstimationEnabled:      r.CostEstimationEnabled.Bool,
 	}
@@ -71,7 +71,7 @@ func (db *pgdb) create(ctx context.Context, org *Organization) error {
 		ID:                         org.ID,
 		CreatedAt:                  sql.Timestamptz(org.CreatedAt),
 		UpdatedAt:                  sql.Timestamptz(org.UpdatedAt),
-		Name:                       sql.String(org.Name),
+		Name:                       sql.String(string(org.Name)),
 		SessionRemember:            sql.Int4Ptr(org.SessionRemember),
 		SessionTimeout:             sql.Int4Ptr(org.SessionTimeout),
 		Email:                      sql.StringPtr(org.Email),
@@ -99,7 +99,7 @@ func (db *pgdb) update(ctx context.Context, name string, fn func(*Organization) 
 		}
 		_, err = q.UpdateOrganizationByName(ctx, sqlc.UpdateOrganizationByNameParams{
 			Name:                       sql.String(name),
-			NewName:                    sql.String(org.Name),
+			NewName:                    sql.String(string(org.Name)),
 			Email:                      sql.StringPtr(org.Email),
 			CollaboratorAuthPolicy:     sql.StringPtr(org.CollaboratorAuthPolicy),
 			CostEstimationEnabled:      sql.Bool(org.CostEstimationEnabled),

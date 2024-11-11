@@ -17,7 +17,7 @@ func TestWeb(t *testing.T) {
 	daemon, org, ctx := setup(t, nil)
 	user := userFromContext(t, ctx)
 
-	team, err := daemon.Teams.Create(ctx, org.Name, team.CreateTeamOptions{
+	team, err := daemon.Teams.Create(ctx, string(org.Name), team.CreateTeamOptions{
 		Name: internal.String("devops"),
 	})
 	require.NoError(t, err)
@@ -26,10 +26,10 @@ func TestWeb(t *testing.T) {
 
 	browser.New(t, ctx, func(page playwright.Page) {
 		// create workspace
-		createWorkspace(t, page, daemon.System.Hostname(), org.Name, "my-workspace")
+		createWorkspace(t, page, daemon.System.Hostname(), string(org.Name), "my-workspace")
 		// assign workspace manager role to devops team
 		// go to org
-		_, err = page.Goto(organizationURL(daemon.System.Hostname(), org.Name))
+		_, err = page.Goto(organizationURL(daemon.System.Hostname(), string(org.Name)))
 		require.NoError(t, err)
 		// list teams
 		err = page.Locator("#teams > a").Click()
@@ -48,11 +48,11 @@ func TestWeb(t *testing.T) {
 		err = expect.Locator(page.GetByRole("alert")).ToHaveText("team permissions updated")
 		require.NoError(t, err)
 		// add write permission on workspace to devops team
-		addWorkspacePermission(t, page, daemon.System.Hostname(), org.Name, "my-workspace", team.ID, "write")
+		addWorkspacePermission(t, page, daemon.System.Hostname(), string(org.Name), "my-workspace", team.ID, "write")
 		// list users
 
 		// go to org
-		_, err = page.Goto(organizationURL(daemon.System.Hostname(), org.Name))
+		_, err = page.Goto(organizationURL(daemon.System.Hostname(), string(org.Name)))
 		require.NoError(t, err)
 
 		// list users
@@ -65,7 +65,7 @@ func TestWeb(t *testing.T) {
 		// list team members
 
 		// go to org
-		_, err = page.Goto(organizationURL(daemon.System.Hostname(), org.Name))
+		_, err = page.Goto(organizationURL(daemon.System.Hostname(), string(org.Name)))
 		require.NoError(t, err)
 
 		// list teams

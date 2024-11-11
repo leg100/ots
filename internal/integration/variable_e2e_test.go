@@ -18,10 +18,10 @@ func TestVariableE2E(t *testing.T) {
 
 	// Create variable in browser
 	browser.New(t, ctx, func(page playwright.Page) {
-		createWorkspace(t, page, svc.System.Hostname(), org.Name, "my-test-workspace")
+		createWorkspace(t, page, svc.System.Hostname(), string(org.Name), "my-test-workspace")
 
 		// go to workspace
-		_, err := page.Goto(workspaceURL(svc.System.Hostname(), org.Name, "my-test-workspace"))
+		_, err := page.Goto(workspaceURL(svc.System.Hostname(), string(org.Name), "my-test-workspace"))
 		require.NoError(t, err)
 		// go to variables
 		err = page.Locator(`//a[text()='variables']`).Click()
@@ -52,7 +52,7 @@ func TestVariableE2E(t *testing.T) {
 	})
 
 	// write some terraform config that declares and outputs the variable
-	root := newRootModule(t, svc.System.Hostname(), org.Name, "my-test-workspace")
+	root := newRootModule(t, svc.System.Hostname(), string(org.Name), "my-test-workspace")
 	config := `
 variable "foo" {
   default = "overwrite_this"
@@ -76,7 +76,7 @@ output "foo" {
 	browser.New(t, ctx, func(page playwright.Page) {
 		//
 		// go to workspace
-		_, err = page.Goto(workspaceURL(svc.System.Hostname(), org.Name, "my-test-workspace"))
+		_, err = page.Goto(workspaceURL(svc.System.Hostname(), string(org.Name), "my-test-workspace"))
 		require.NoError(t, err)
 		// go to variables
 		err = page.Locator(`//a[text()='variables']`).Click()

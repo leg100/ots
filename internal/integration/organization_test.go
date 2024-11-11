@@ -28,13 +28,13 @@ func TestIntegration_Organization(t *testing.T) {
 
 		t.Run("duplicate error", func(t *testing.T) {
 			_, err := svc.Organizations.Create(ctx, organization.CreateOptions{
-				Name: internal.String(org.Name),
+				Name: internal.String(string(org.Name)),
 			})
 			require.Equal(t, internal.ErrResourceAlreadyExists, err)
 		})
 
 		t.Run("owners team should be created", func(t *testing.T) {
-			owners, err := svc.Teams.Get(ctx, org.Name, "owners")
+			owners, err := svc.Teams.Get(ctx, string(org.Name), "owners")
 			require.NoError(t, err)
 
 			t.Run("creator should be a member", func(t *testing.T) {
@@ -57,7 +57,7 @@ func TestIntegration_Organization(t *testing.T) {
 		assert.Equal(t, pubsub.NewCreatedEvent(org), <-sub)
 
 		want := uuid.NewString()
-		updated, err := daemon.Organizations.Update(ctx, org.Name, organization.UpdateOptions{
+		updated, err := daemon.Organizations.Update(ctx, string(org.Name), organization.UpdateOptions{
 			Name: internal.String(want),
 		})
 		require.NoError(t, err)
@@ -136,11 +136,11 @@ func TestIntegration_Organization(t *testing.T) {
 		org := daemon.createOrganization(t, ctx)
 		assert.Equal(t, pubsub.NewCreatedEvent(org), <-sub)
 
-		err := daemon.Organizations.Delete(ctx, org.Name)
+		err := daemon.Organizations.Delete(ctx, string(org.Name))
 		require.NoError(t, err)
 		assert.Equal(t, pubsub.NewDeletedEvent(&organization.Organization{ID: org.ID}), <-sub)
 
-		_, err = daemon.Organizations.Get(ctx, org.Name)
+		_, err = daemon.Organizations.Get(ctx, string(org.Name))
 		assert.Equal(t, internal.ErrResourceNotFound, err)
 	})
 

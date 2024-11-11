@@ -57,7 +57,7 @@ func TestWeb_ListHandler(t *testing.T) {
 	t.Run("pagination", func(t *testing.T) {
 		orgs := make([]*Organization, 201)
 		for i := 1; i <= 201; i++ {
-			orgs[i-1] = &Organization{Name: uuid.NewString()}
+			orgs[i-1] = &Organization{Name: Name(uuid.NewString())}
 		}
 		svc := &web{
 			svc:      &fakeWebService{orgs: orgs},
@@ -144,7 +144,7 @@ func TestWeb_ListHandler(t *testing.T) {
 func TestWeb_DeleteHandler(t *testing.T) {
 	svc := &web{
 		svc: &fakeWebService{
-			orgs: []*Organization{{Name: uuid.NewString()}},
+			orgs: []*Organization{{Name: Name(uuid.NewString())}},
 		},
 		Renderer: testutils.NewRenderer(t),
 	}

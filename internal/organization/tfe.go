@@ -253,7 +253,7 @@ func (a *tfe) include(ctx context.Context, v any) ([]any, error) {
 
 func (a *tfe) toOrganization(from *Organization) *types.Organization {
 	to := &types.Organization{
-		Name:                       from.Name,
+		Name:                       string(from.Name),
 		CreatedAt:                  from.CreatedAt,
 		ExternalID:                 from.ID,
 		Permissions:                &types.DefaultOrganizationPermissions,

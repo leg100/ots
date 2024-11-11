@@ -15,9 +15,9 @@ func TestAutoApply(t *testing.T) {
 
 	// create workspace and enable auto-apply
 	browser.New(t, ctx, func(page playwright.Page) {
-		createWorkspace(t, page, svc.System.Hostname(), org.Name, t.Name())
+		createWorkspace(t, page, svc.System.Hostname(), string(org.Name), t.Name())
 		// go to workspace
-		_, err := page.Goto(workspaceURL(svc.System.Hostname(), org.Name, t.Name()))
+		_, err := page.Goto(workspaceURL(svc.System.Hostname(), string(org.Name), t.Name()))
 		require.NoError(t, err)
 		// go to workspace settings
 		err = page.Locator(`//a[text()='settings']`).Click()
@@ -32,7 +32,7 @@ func TestAutoApply(t *testing.T) {
 		err = expect.Locator(page.GetByRole("alert")).ToHaveText("updated workspace")
 		require.NoError(t, err)
 		// check UI has correctly updated the workspace resource
-		ws, err := svc.Workspaces.GetByName(ctx, org.Name, t.Name())
+		ws, err := svc.Workspaces.GetByName(ctx, string(org.Name), t.Name())
 		require.NoError(t, err)
 		require.Equal(t, true, ws.AutoApply)
 	})

@@ -25,7 +25,7 @@ func TestRunError(t *testing.T) {
 
 	// create a daemon and start an agent
 	daemon, org, ctx := setup(t, nil)
-	agent, _ := daemon.startAgent(t, ctx, org.Name, nil, "", runner.Config{})
+	agent, _ := daemon.startAgent(t, ctx, string(org.Name), nil, "", runner.Config{})
 
 	// two tests: one run on the daemon, one via the agent.
 	tests := []struct {
@@ -45,7 +45,7 @@ func TestRunError(t *testing.T) {
 			// create workspace
 			ws, err := daemon.Workspaces.Create(ctx, workspace.CreateOptions{
 				Name:          internal.String("ws-" + string(tt.mode)),
-				Organization:  internal.String(org.Name),
+				Organization:  internal.String(string(org.Name)),
 				ExecutionMode: workspace.ExecutionModePtr(tt.mode),
 				AgentPoolID:   tt.poolID,
 			})
@@ -65,7 +65,7 @@ func TestRunError(t *testing.T) {
 		}
 		# should be 'null_resource'
 		resource "null_resourc" "e2e" {}
-		`, daemon.System.Hostname(), org.Name, ws.Name)
+		`, daemon.System.Hostname(), string(org.Name), ws.Name)
 
 			// upload config
 			cv := daemon.createConfigurationVersion(t, ctx, ws, nil)

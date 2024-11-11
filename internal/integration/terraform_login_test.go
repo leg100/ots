@@ -85,7 +85,7 @@ func TestTerraformLogin(t *testing.T) {
 	// create some terraform config and run terraform init to demonstrate user
 	// has authenticated successfully.
 	org := svc.createOrganization(t, ctx)
-	configPath := newRootModule(t, svc.System.Hostname(), org.Name, t.Name())
+	configPath := newRootModule(t, svc.System.Hostname(), string(org.Name), t.Name())
 	cmd := exec.Command(tfpath, "init")
 	cmd.Dir = configPath
 	assert.NoError(t, cmd.Run())

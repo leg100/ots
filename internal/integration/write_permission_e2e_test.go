@@ -22,13 +22,13 @@ func TestWritePermissionE2E(t *testing.T) {
 	require.NoError(t, err)
 
 	// create terraform config
-	config := newRootModule(t, svc.System.Hostname(), org.Name, "my-test-workspace")
+	config := newRootModule(t, svc.System.Hostname(), string(org.Name), "my-test-workspace")
 
 	// Open browser, create workspace and assign write permissions to the
 	// engineer's team.
 	browser.New(t, ctx, func(page playwright.Page) {
-		createWorkspace(t, page, svc.System.Hostname(), org.Name, "my-test-workspace")
-		addWorkspacePermission(t, page, svc.System.Hostname(), org.Name, "my-test-workspace", team.ID, "write")
+		createWorkspace(t, page, svc.System.Hostname(), string(org.Name), "my-test-workspace")
+		addWorkspacePermission(t, page, svc.System.Hostname(), string(org.Name), "my-test-workspace", team.ID, "write")
 	})
 
 	// As engineer, run terraform init
@@ -44,10 +44,10 @@ func TestWritePermissionE2E(t *testing.T) {
 	require.Contains(t, out, "Apply complete! Resources: 0 added, 0 changed, 1 destroyed.")
 
 	// lock and unlock workspace
-	svc.otfcli(t, ctx, "workspaces", "lock", "my-test-workspace", "--organization", org.Name)
-	svc.otfcli(t, ctx, "workspaces", "unlock", "my-test-workspace", "--organization", org.Name)
+	svc.otfcli(t, ctx, "workspaces", "lock", "my-test-workspace", "--organization", string(org.Name))
+	svc.otfcli(t, ctx, "workspaces", "unlock", "my-test-workspace", "--organization", string(org.Name))
 
 	// list workspaces
-	out = svc.otfcli(t, ctx, "workspaces", "list", "--organization", org.Name)
+	out = svc.otfcli(t, ctx, "workspaces", "list", "--organization", string(org.Name))
 	require.Contains(t, out, "my-test-workspace")
 }

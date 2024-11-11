@@ -24,13 +24,13 @@ func TestIntegration_PlanPermission(t *testing.T) {
 	require.NoError(t, err)
 
 	// create some terraform configuration
-	configPath := newRootModule(t, svc.System.Hostname(), org.Name, "my-test-workspace")
+	configPath := newRootModule(t, svc.System.Hostname(), string(org.Name), "my-test-workspace")
 
 	// Open tab and create a workspace and assign plan role to the
 	// engineer's team.
 	browser.New(t, ctx, func(page playwright.Page) {
-		createWorkspace(t, page, svc.System.Hostname(), org.Name, "my-test-workspace")
-		addWorkspacePermission(t, page, svc.System.Hostname(), org.Name, "my-test-workspace", team.ID, "plan")
+		createWorkspace(t, page, svc.System.Hostname(), string(org.Name), "my-test-workspace")
+		addWorkspacePermission(t, page, svc.System.Hostname(), string(org.Name), "my-test-workspace", team.ID, "plan")
 	})
 
 	// As engineer, run terraform init, and plan. This should succeed because
@@ -53,6 +53,6 @@ func TestIntegration_PlanPermission(t *testing.T) {
 
 	// Now demonstrate engineer can start a plan via the UI.
 	browser.New(t, ctx, func(page playwright.Page) {
-		startRunTasks(t, page, svc.System.Hostname(), org.Name, "my-test-workspace", run.PlanOnlyOperation, false)
+		startRunTasks(t, page, svc.System.Hostname(), string(org.Name), "my-test-workspace", run.PlanOnlyOperation, false)
 	})
 }

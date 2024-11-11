@@ -24,7 +24,7 @@ func TestIntegration_TagService(t *testing.T) {
 		require.NoError(t, err)
 
 		// should have 3 tags across org
-		got, err := svc.Workspaces.ListTags(ctx, org.Name, workspace.ListTagsOptions{})
+		got, err := svc.Workspaces.ListTags(ctx, string(org.Name), workspace.ListTagsOptions{})
 		require.NoError(t, err)
 		assert.Equal(t, 3, len(got.Items))
 
@@ -43,7 +43,7 @@ func TestIntegration_TagService(t *testing.T) {
 			require.NoError(t, err)
 
 			// should still have 3 tags across org
-			got, err := svc.Workspaces.ListTags(ctx, org.Name, workspace.ListTagsOptions{})
+			got, err := svc.Workspaces.ListTags(ctx, string(org.Name), workspace.ListTagsOptions{})
 			require.NoError(t, err)
 			assert.Equal(t, 3, len(got.Items))
 

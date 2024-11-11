@@ -131,7 +131,7 @@ func (s *Service) DeleteUnreferencedRepohooks(ctx context.Context) error {
 }
 
 func (s *Service) deleteOrganizationRepohooks(ctx context.Context, org *organization.Organization) error {
-	providers, err := s.vcsproviders.List(ctx, org.Name)
+	providers, err := s.vcsproviders.List(ctx, string(org.Name))
 	if err != nil {
 		return err
 	}
