@@ -2,90 +2,90 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://docs.otf.ninja/v0.3.8/</loc>
-         <lastmod>2025-01-11</lastmod>
+         <lastmod>2025-01-12</lastmod>
     </url>
     <url>
          <loc>https://docs.otf.ninja/v0.3.8/agents/</loc>
-         <lastmod>2025-01-11</lastmod>
+         <lastmod>2025-01-12</lastmod>
     </url>
     <url>
          <loc>https://docs.otf.ninja/v0.3.8/cli/</loc>
-         <lastmod>2025-01-11</lastmod>
+         <lastmod>2025-01-12</lastmod>
     </url>
     <url>
          <loc>https://docs.otf.ninja/v0.3.8/dev/</loc>
-         <lastmod>2025-01-11</lastmod>
+         <lastmod>2025-01-12</lastmod>
     </url>
     <url>
          <loc>https://docs.otf.ninja/v0.3.8/github_app/</loc>
-         <lastmod>2025-01-11</lastmod>
+         <lastmod>2025-01-12</lastmod>
     </url>
     <url>
          <loc>https://docs.otf.ninja/v0.3.8/install/</loc>
-         <lastmod>2025-01-11</lastmod>
+         <lastmod>2025-01-12</lastmod>
     </url>
     <url>
          <loc>https://docs.otf.ninja/v0.3.8/notifications/</loc>
-         <lastmod>2025-01-11</lastmod>
+         <lastmod>2025-01-12</lastmod>
     </url>
     <url>
          <loc>https://docs.otf.ninja/v0.3.8/quickstart/</loc>
-         <lastmod>2025-01-11</lastmod>
+         <lastmod>2025-01-12</lastmod>
     </url>
     <url>
          <loc>https://docs.otf.ninja/v0.3.8/rbac/</loc>
-         <lastmod>2025-01-11</lastmod>
+         <lastmod>2025-01-12</lastmod>
     </url>
     <url>
          <loc>https://docs.otf.ninja/v0.3.8/registry/</loc>
-         <lastmod>2025-01-11</lastmod>
+         <lastmod>2025-01-12</lastmod>
     </url>
     <url>
          <loc>https://docs.otf.ninja/v0.3.8/testing/</loc>
-         <lastmod>2025-01-11</lastmod>
+         <lastmod>2025-01-12</lastmod>
     </url>
     <url>
          <loc>https://docs.otf.ninja/v0.3.8/tfc_migration/</loc>
-         <lastmod>2025-01-11</lastmod>
+         <lastmod>2025-01-12</lastmod>
     </url>
     <url>
          <loc>https://docs.otf.ninja/v0.3.8/vcs_providers/</loc>
-         <lastmod>2025-01-11</lastmod>
+         <lastmod>2025-01-12</lastmod>
     </url>
     <url>
          <loc>https://docs.otf.ninja/v0.3.8/auth/org_token/</loc>
-         <lastmod>2025-01-11</lastmod>
+         <lastmod>2025-01-12</lastmod>
     </url>
     <url>
          <loc>https://docs.otf.ninja/v0.3.8/auth/site_admins/</loc>
-         <lastmod>2025-01-11</lastmod>
+         <lastmod>2025-01-12</lastmod>
     </url>
     <url>
          <loc>https://docs.otf.ninja/v0.3.8/auth/user_token/</loc>
-         <lastmod>2025-01-11</lastmod>
+         <lastmod>2025-01-12</lastmod>
     </url>
     <url>
          <loc>https://docs.otf.ninja/v0.3.8/auth/providers/github/</loc>
-         <lastmod>2025-01-11</lastmod>
+         <lastmod>2025-01-12</lastmod>
     </url>
     <url>
          <loc>https://docs.otf.ninja/v0.3.8/auth/providers/gitlab/</loc>
-         <lastmod>2025-01-11</lastmod>
+         <lastmod>2025-01-12</lastmod>
     </url>
     <url>
          <loc>https://docs.otf.ninja/v0.3.8/auth/providers/iap/</loc>
-         <lastmod>2025-01-11</lastmod>
+         <lastmod>2025-01-12</lastmod>
     </url>
     <url>
          <loc>https://docs.otf.ninja/v0.3.8/auth/providers/oidc/</loc>
-         <lastmod>2025-01-11</lastmod>
+         <lastmod>2025-01-12</lastmod>
     </url>
     <url>
          <loc>https://docs.otf.ninja/v0.3.8/config/envvars/</loc>
-         <lastmod>2025-01-11</lastmod>
+         <lastmod>2025-01-12</lastmod>
     </url>
     <url>
          <loc>https://docs.otf.ninja/v0.3.8/config/flags/</loc>
-         <lastmod>2025-01-11</lastmod>
+         <lastmod>2025-01-12</lastmod>
     </url>
 </urlset>
