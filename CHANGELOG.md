@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.14](https://github.com/leg100/otf/compare/v0.3.13...v0.3.14) (2025-01-23)
+
+
+### Miscellaneous
+
+* use builtin run watcher for integration tests ([e0299d3](https://github.com/leg100/otf/commit/e0299d3b791af3b072ae7cb69ffefe22840c7042))
+
 ## [0.3.13](https://github.com/leg100/otf/compare/v0.3.12...v0.3.13) (2025-01-23)
 
 
